@@ -12,12 +12,6 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    # permissions:
-    #   contents: read
-    #   pull-requests: write
-    #   issues: write
-    #   statuses: read
-    #   checks: read
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -64,7 +58,7 @@ jobs:
                 },
                 {
                   title: 'Triggered By',
-                  value: [{'origin': 'pull_request', 'new': 'Pull Request'}, {'origin': 'schedule', 'new': 'Schedule'}, {'origin': 'repository_dispatch', 'new': 'Deploy'}, {'origin': 'workflow_dispatch', 'new': 'GitHub Actions'}].find(item => item.origin === `${process.env.AS_EVENT_NAME}`).new || `${process.env.AS_EVENT_NAME}`,
+                  value: [{'origin': 'pull_request', 'new': 'Pull Request'}, {'origin': 'schedule', 'new': 'Schedule'}, {'origin': 'repository_dispatch', 'new': 'Deploy'}, {'origin': 'workflow_dispatch', 'new': 'GitHub Actions'}, {"origin": "push", "new": "Push Event"}].find(item => item.origin === `${process.env.AS_EVENT_NAME}`).new || `${process.env.AS_EVENT_NAME}`,
                   short: true
                 },
                 {
