@@ -1,5 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
 
+test('Example test 1',async()=>{})
+
 test.skip('has title', async ({ page }) => {
   await page.goto('https://playwright.dev/');
 
