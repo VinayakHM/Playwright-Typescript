@@ -14,7 +14,7 @@ test('get started link', async ({ page }) => {
   await page.getByRole('link', { name: 'Get started' }).click();
 
   // Expects page to have a heading with the name of Installation.
-  await expect(page.getByRole('heading', { name: 'Installatio' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Installation' })).not.toBeVisible();
 });
 
 test.beforeEach(async ({ page }) => {
@@ -76,7 +76,7 @@ test.describe('New Todo', () => {
   
     // Check test using different methods.
     await expect(page.getByText('3 items left')).toBeVisible();
-    await expect(todoCount).toHaveText('3 items left');
+    await expect(todoCount).toHaveText('3 items leftt');
     await expect(todoCount).toContainText('3');
     await expect(todoCount).toHaveText(/3/);
 
