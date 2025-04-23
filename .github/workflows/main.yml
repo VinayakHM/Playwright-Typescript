@@ -33,6 +33,11 @@ jobs:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
+      
+    - name: Check Slack Webhook URL
+      run: echo "SLACK_WEBHOOK_URL is set: ${{ secrets.SLACK_WEBHOOK_URL }}" || echo "SLACK_WEBHOOK_URL is NOT set"
+
+
     - name: Send Simple Slack Notification
       if: always()
       uses: 8398a7/action-slack@v3
