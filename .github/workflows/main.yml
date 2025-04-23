@@ -1,10 +1,5 @@
 name: Playwright Tests
 on:
-permissions:
-  contents: read
-  pull-requests: read
-  statuses: read
-
   push:
     branches: [ main, master ]
   pull_request:
@@ -15,6 +10,10 @@ jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+    permissions:
+  contents: read
+  pull-requests: read
+  statuses: read
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
