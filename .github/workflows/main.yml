@@ -69,17 +69,17 @@ jobs:
                 },
                 {
                   title: 'Repo',
-                  value: `${process.env.AS_REPO}`,
+                  value: `${env.AS_REPO}`,
                   short: true
                 },
                 {
                   title: 'Execution Time',
-                  value: `${process.env.AS_TOOK}`,
+                  value: `${env.AS_TOOK}`,
                   short: true
                 },
                 {
                   title: 'Workflow',
-                  value: `${process.env.AS_WORKFLOW}`,
+                  value: `${env.AS_WORKFLOW}`,
                   short: true
                 },
                 {
