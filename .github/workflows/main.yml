@@ -38,7 +38,7 @@ jobs:
       uses: 8398a7/action-slack@v3
       with:
         status: custom
-        fields: repo,eventName,workflow,job,took
+        # fields: repo,eventName,workflow,job,took
         custom_payload: |
           {
             "text": "This is a test notification from GitHub Actions!"
