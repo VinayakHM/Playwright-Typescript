@@ -57,4 +57,4 @@ jobs:
           *PLAYWRIGHT TEST SUMMARY* - Health: ${{ env.health }}%
           Total: ${{ env.total }} | Failures: ${{ env.fail }} | Skipped: ${{ env.skip }} | Flaky: ${{ env.flaky }} | Passed: ${{ env.pass }}
     env:
-      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
