@@ -54,6 +54,10 @@ jobs:
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
       with:
+<<<<<<< HEAD
         status: "success"   # or dynamically set based on the job outcome
         text: "*PLAYWRIGHT TEST SUMMARY* - Health: ${{ env.health }}%
           Total: ${{ env.pass + env.fail + env.skip + env.flaky }} | Failures: ${{ env.fail }} | Skipped: ${{ env.skip }} | Flaky: ${{ env.flaky }} | Passed: ${{ env.pass }}"
+=======
+        status: "success"   # or dynamically set based on the job outcome
+>>>>>>> eb7b7ac (message)
