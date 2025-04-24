@@ -47,13 +47,13 @@ jobs:
         echo "fail=$fail" >> $GITHUB_ENV
         echo "skip=$skip" >> $GITHUB_ENV
         echo "flaky=$flaky" >> $GITHUB_ENV
-    # Send Slack notification
+    # Send Slack notificationn
     - name: Send Slack notification
       if: always()
       uses: 8398a7/action-slack@v3
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
       with:
-      status: "success"   # or dynamically set based on the job outcome
-      text: "*PLAYWRIGHT TEST SUMMARY* - Health: ${{ env.health }}%
-        Total: ${{ env.pass + env.fail + env.skip + env.flaky }} | Failures: ${{ env.fail }} | Skipped: ${{ env.skip }} | Flaky: ${{ env.flaky }} | Passed: ${{ env.pass }}"
+        status: "success"   # or dynamically set based on the job outcome
+        text: "*PLAYWRIGHT TEST SUMMARY* - Health: ${{ env.health }}%
+          Total: ${{ env.pass + env.fail + env.skip + env.flaky }} | Failures: ${{ env.fail }} | Skipped: ${{ env.skip }} | Flaky: ${{ env.flaky }} | Passed: ${{ env.pass }}"
