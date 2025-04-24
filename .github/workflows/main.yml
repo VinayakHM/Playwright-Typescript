@@ -51,10 +51,10 @@ jobs:
     - name: Send Slack notification
       if: always()
       uses: 8398a7/action-slack@v3
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       with:
         status: "success"   # or dynamically set based on the job outcome
         text: >
           *PLAYWRIGHT TEST SUMMARY* - Health: ${{ env.health }}%
           Total: ${{ env.total }} | Failures: ${{ env.fail }} | Skipped: ${{ env.skip }} | Flaky: ${{ env.flaky }} | Passed: ${{ env.pass }}
-    env:
-      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
