@@ -54,7 +54,6 @@ jobs:
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
       with:
-        args: |
-          --color ${{ steps.test-stats.outputs.color }}
-          --text "*PLAYWRIGHT TEST SUMMARY* - Health: ${{ steps.test-stats.outputs.health }}%
-          Total: ${{ steps.test-stats.outputs.total }} | Failures: ${{ steps.test-stats.outputs.fail }} | Skipped: ${{ steps.test-stats.outputs.skip }} | Flaky: ${{ steps.test-stats.outputs.flaky }} | Passed: ${{ steps.test-stats.outputs.pass }}"
+    status: ${{ job.status }}   # or dynamically set based on the job outcome
+    text: "*PLAYWRIGHT TEST SUMMARY* - Health: ${{ env.health }}%
+      Total: ${{ env.pass + env.fail + env.skip + env.flaky }} | Failures: ${{ env.fail }} | Skipped: ${{ env.skip }} | Flaky: ${{ env.flaky }} | Passed: ${{ env.pass }}"
