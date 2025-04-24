@@ -56,4 +56,4 @@ jobs:
       with:
     status: ${{ job.status }}   # or dynamically set based on the job outcome
     text: "*PLAYWRIGHT TEST SUMMARY* - Health: ${{ env.health }}%
-    Total: ${{ env.pass + env.fail + env.skip + env.flaky }} | Failures: ${{ env.fail }} | Skipped: ${{ env.skip }} | Flaky: ${{ env.flaky }} | Passed: ${{ env.pass }}"
+      Total: ${{ env.pass + env.fail + env.skip + env.flaky }} | Failures: ${{ env.fail }} | Skipped: ${{ env.skip }} | Flaky: ${{ env.flaky }} | Passed: ${{ env.pass }}"
