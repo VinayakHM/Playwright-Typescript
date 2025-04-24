@@ -31,26 +31,9 @@ jobs:
         retention-days: 30
     # Parse test results and calculate health stats
     - name: Parse test results
-    # Parse test results and calculate health stats
-    - name: Parse test results
       if: always()
       id: test-stats
       run: |
-        results=$(cat test-results/results/results.json)
-        stats=$(echo $results | jq .stats)
-        total=$(echo $stats | jq '.expected + .unexpected + .skipped + .flaky')
-        pass=$(echo $stats | jq '.expected')
-        fail=$(echo $stats | jq '.unexpected')
-        skip=$(echo $stats | jq '.skipped')
-        flaky=$(echo $stats | jq '.flaky')
-        health=$((pass * 100 / total))
-        echo "health=$health" >> $GITHUB_ENV
-        echo "pass=$pass" >> $GITHUB_ENV
-        echo "fail=$fail" >> $GITHUB_ENV
-        echo "skip=$skip" >> $GITHUB_ENV
-        echo "flaky=$flaky" >> $GITHUB_ENV
-    # Send Slack notificationn
-    - name: Send Slack notification
         results=$(cat test-results/results/results.json)
         stats=$(echo $results | jq .stats)
         total=$(echo $stats | jq '.expected + .unexpected + .skipped + .flaky')
@@ -72,4 +55,7 @@ jobs:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
       with:
         status: "success"   # or dynamically set based on the job outcome
-        text: "*PLAYWRIGHT TEST SUMMARY* - Health: ${{ env.health }}%
+        text: >
+          *PLAYWRIGHT TEST SUMMARY* - Health: ${{ env.health }}%
+          Total: ${{ env.pass + env.fail + env.skip + env.flaky }} |
+          Failures: ${{ env.fail }} | Skipped: ${{ env.skip }} | Flaky: ${{ env.flaky }} | Passed: ${{ env.pass }}
