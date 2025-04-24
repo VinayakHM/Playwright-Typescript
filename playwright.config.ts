@@ -23,12 +23,27 @@ export default defineConfig({
   workers: process.env.CI ? 3 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   // reporter: 'html',
-
   reporter: [
-    ['playwright-json-summary-reporter'],
-    ['html'], // other reporters
-    ['dot']
+    ['./src/utils/logger/TestListener.ts'],
+    [
+      'allure-playwright',
+      {
+        detail: false,
+        suiteTitle: false,
+        environmentInfo: {
+          OS: process.platform.toUpperCase(),
+        },
+      },
+    ],
+    ['html', { outputFolder: './test-results/report', open: 'on-failure' }],
+    ['json', { outputFile: './test-results/results/results.json' }],
   ],
+
+  // reporter: [
+  //   ['playwright-json-summary-reporter'],
+  //   ['html'], // other reporters
+  //   ['dot']
+  // ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
