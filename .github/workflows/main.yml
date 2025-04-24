@@ -31,6 +31,7 @@ jobs:
         retention-days: 30
     # Parse test results and calculate health stats
     - name: Parse test results
+      if: always()
       id: test-stats
       run: |
         results=$(cat test-results/results/results.json)
@@ -46,9 +47,9 @@ jobs:
         echo "fail=$fail" >> $GITHUB_ENV
         echo "skip=$skip" >> $GITHUB_ENV
         echo "flaky=$flaky" >> $GITHUB_ENV
-
     # Send Slack notification
     - name: Send Slack notification
+      if: always()
       uses: 8398a7/action-slack@v3
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
