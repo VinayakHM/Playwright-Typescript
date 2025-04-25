@@ -52,14 +52,60 @@ jobs:
         echo "fail=$fail" >> $GITHUB_ENV
         echo "skip=$skip" >> $GITHUB_ENV
         echo "flaky=$flaky" >> $GITHUB_ENV
-    # Send Slack notificationn
-    - name: Send Slack notification
+        echo "total=$total" >> $GITHUB_ENV
+        
+    - name: Send Slack Notification
       if: always()
       uses: 8398a7/action-slack@v3
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
       with:
-        status: ${{ job.status }}   # or dynamically set based on the job outcome
-        text: >
-          *PLAYWRIGHT TEST SUMMARY* - Health: ${{ env.health }}%
-          Total: ${{ env.total }} | Failures: ${{ env.fail }} | Skipped: ${{ env.skip }} | Flaky: ${{ env.flaky }} | Passed: ${{ env.pass }}
+          status: custom
+          fields: repo,eventName,workflow,job,took
+          custom_payload: |
+            {
+              attachments: [{
+                color: '${{ job.status }}' === 'success' ? 'good' : 'danger',
+                title: `Playwright Demo Automation Results :test_tube:`,
+                fields: [{
+                  title: 'Site Under Test',
+                  value: '${{ env.APP_URL }}',
+                  short: true
+                },
+                {
+                  title: 'Triggered By',
+                  value: [{'origin': 'pull_request', 'new': 'Pull Request'}, {'origin': 'schedule', 'new': 'Schedule'}, {'origin': 'repository_dispatch', 'new': 'Deploy'}, {'origin': 'workflow_dispatch', 'new': 'GitHub Actions'}, {"origin": "push", "new": "Push Event"}].find(item => item.origin === `${process.env.AS_EVENT_NAME}`).new || `${process.env.AS_EVENT_NAME}`,
+                  short: true
+                },
+                {
+                  title: 'Repo',
+                  value: `${process.env.AS_REPO}`,
+                  short: true
+                },
+                {
+                  title: 'Execution Time',
+                  value: `${process.env.AS_TOOK}`,
+                  short: true
+                },
+                {
+                  title: 'Workflow',
+                  value: `${process.env.AS_WORKFLOW}`,
+                  short: true
+                },
+                {
+                  title: 'Total Tests',
+                  value: `${{ env.total }}`,
+                  short: true
+                },
+                {
+                  title: 'Pull Request',
+                  value: `${{ env.PULL_REQUEST_URL }}`,
+                  short: false
+                },
+                {
+                  title: 'Failures',
+                  value: `${{ env.fail }}`,
+                  short: false
+                }]
+              }]
+            }  
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
