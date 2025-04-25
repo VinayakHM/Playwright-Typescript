@@ -53,7 +53,7 @@ jobs:
         echo "skip=$skip" >> $GITHUB_ENV
         echo "flaky=$flaky" >> $GITHUB_ENV
         echo "total=$total" >> $GITHUB_ENV
-        
+
     - name: Send Slack Notification
       if: always()
       uses: 8398a7/action-slack@v3
@@ -101,8 +101,28 @@ jobs:
                   short: false
                 },
                 {
-                  title: 'Failures',
+                  title: 'Health',
+                  value: `${{ env.health }}`,
+                  short: false
+                },
+                {
+                  title: 'Failed',
                   value: `${{ env.fail }}`,
+                  short: false
+                },
+                {
+                  title: 'Passed',
+                  value: `${{ env.pass }}`,
+                  short: false
+                },
+                {
+                  title: 'Skipped',
+                  value: `${{ env.skip }}`,
+                  short: false
+                },
+                {
+                  title: 'Flaky',
+                  value: `${{ env.flaky }}`,
                   short: false
                 }]
               }]
