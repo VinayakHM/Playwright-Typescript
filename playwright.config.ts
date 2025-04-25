@@ -40,6 +40,7 @@ export default defineConfig({
   ],
 
   // reporter: [
+  //   ['./src/utils/logger/TestListener.ts'],
   //   ['playwright-json-summary-reporter'],
   //   ['html'], // other reporters
   //   ['dot']
