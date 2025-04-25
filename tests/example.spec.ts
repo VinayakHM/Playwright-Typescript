@@ -1,6 +1,9 @@
 import { test, expect, Page } from '@playwright/test';
 
-test('Example test 1',async()=>{})
+test.only('Example test 1',async()=>{
+  console.log('Print the env file fields : '+process.env.user);
+  await expect(process.env.user).toEqual('vinayak');
+})
 
 test.skip('has title', async ({ page }) => {
   await page.goto('https://playwright.dev/');
