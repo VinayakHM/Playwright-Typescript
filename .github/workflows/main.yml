@@ -91,14 +91,14 @@ jobs:
                   short: true
                 },
                 {
-                  title: 'Total Tests',
-                  value: `${{ env.total }}`,
-                  short: true
-                },
-                {
                   title: 'Pull Request',
                   value: `${{ env.PULL_REQUEST_URL }}`,
                   short: false
+                },
+                {
+                  title: 'Total Tests',
+                  value: `${{ env.total }}`,
+                  short: true
                 },
                 {
                   title: 'Health',
