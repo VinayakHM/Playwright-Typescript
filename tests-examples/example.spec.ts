@@ -1,6 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
 
-test.only('Example test 1',async()=>{
+test('Example test 1',async()=>{
   console.log('Print the env file fields : '+process.env.user);
   await expect(process.env.user).toEqual('vinayak');
 })
