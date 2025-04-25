@@ -102,7 +102,7 @@ jobs:
                 },
                 {
                   title: 'Health',
-                  value: `${{ env.health }}`,
+                  value: `${{ env.health }}%`,
                   short: false
                 },
                 {
