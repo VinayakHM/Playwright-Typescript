@@ -103,27 +103,27 @@ jobs:
                 {
                   title: 'Health',
                   value: `${{ env.health }}%`,
-                  short: false
+                  short: true
                 },
                 {
                   title: 'Failed',
                   value: `${{ env.fail }}`,
-                  short: false
+                  short: true
                 },
                 {
                   title: 'Passed',
                   value: `${{ env.pass }}`,
-                  short: false
+                  short: true
                 },
                 {
                   title: 'Skipped',
                   value: `${{ env.skip }}`,
-                  short: false
+                  short: true
                 },
                 {
                   title: 'Flaky',
                   value: `${{ env.flaky }}`,
-                  short: false
+                  short: true
                 }]
               }]
             }  
