@@ -106,12 +106,12 @@ jobs:
                   short: true
                 },
                 {
-                  title: 'Failed :x:',
+                  title: 'Failed',
                   value: `${{ env.fail }}`,
                   short: true
                 },
                 {
-                  title: 'Passed :white_check_mark:',
+                  title: 'Passed',
                   value: `${{ env.pass }}`,
                   short: true
                 },
