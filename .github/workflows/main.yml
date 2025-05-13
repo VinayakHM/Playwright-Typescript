@@ -7,7 +7,9 @@ on:
   # schedule:
   #   - cron: '*/15 * * * *'    # At every 15th minute
 env:
-  APP_URL: 'https://your-app-url.com' # Replace with your actual app URL
+  APP_URL: 'https://your-app-url.com'
+  user: ${{ secrets.USER }}
+  # Replace with your actual app URL
 jobs:
   test:
     timeout-minutes: 60
@@ -22,10 +24,10 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: 'Create env file'
-      run: |
-        touch .env
-        echo user=${{ secrets.USER }} >> .env
-        cat .env
+      # run: |
+      #   touch .env
+      #   echo user=${{ secrets.USER }} >> .env
+      #   cat .env
     - name: Run Playwright tests
       run: npx playwright test
     - uses: actions/upload-artifact@v4
