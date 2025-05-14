@@ -6,6 +6,12 @@ test('Example test 1',async()=>{
   await expect(process.env.user).toEqual('vinayak');
 })
 
+test('test', async ({ page }) => {
+  await page.goto('https://playwright.dev/docs/intro');
+  await page.getByRole('button', { name: 'Search (Ctrl+K)' }).click();
+  await page.getByRole('searchbox', { name: 'Search' }).fill(process.env.pwd as string);
+});
+
 test.skip('has title', async ({ page }) => {
   await page.goto('https://playwright.dev/');
 
