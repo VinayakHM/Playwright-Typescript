@@ -8,3 +8,4 @@ node_modules/
 summary.json
 allure-results
 .env
+jenkinsfile
