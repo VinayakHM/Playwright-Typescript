@@ -9,6 +9,7 @@ on:
 env:
   APP_URL: 'https://your-app-url.com'
   user: ${{ secrets.USER }}
+  pwd: ${{ secrets.pwd }}
   # Replace with your actual app URL
 jobs:
   test:
