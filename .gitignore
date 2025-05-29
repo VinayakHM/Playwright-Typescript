@@ -9,3 +9,4 @@ summary.json
 allure-results
 .env
 jenkinsfile
+allure-results/
