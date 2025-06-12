@@ -40,7 +40,7 @@ export default defineConfig({
     ],
     ['html', { outputFolder: './test-results/report', open: 'on-failure' }],
     ['json', { outputFile: './test-results/results/results.json' }],
-    ['blob', { outputFile: './test-results/results/results.blob' }],
+    ['blob']
   ],
 
   // reporter: [
