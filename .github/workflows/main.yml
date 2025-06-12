@@ -30,6 +30,8 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
+    - name: Create Merged Report Directory
+      run: mkdir -p merged-reports
     # - name: 'Create env file'
       # run: |
       #   touch .env
@@ -37,13 +39,19 @@ jobs:
       #   cat .env
     - name: Run Playwright tests
       run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
-    - name: Upload blob report to GitHub Actions Artifacts
+    - name: Move Shard Reports to Merged Directory
+      run: mv blob-report merged-reports/blob-report-${{ matrix.shardIndex }}
+
+    - name: Merge Playwright Reports
       if: always()
+      run: npx playwright merge-reports merged-reports
+
+    - name: Upload Merged Blob Report to GitHub Actions Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: blob-report-${{ matrix.shardIndex }}
-        path: blob-report
-        retention-days: 1
+        name: merged-blob-report
+        path: merged-reports/
+        retention-days: 7
     # - uses: actions/upload-artifact@v4
     #   if: ${{ !cancelled() }}
     #   with:
