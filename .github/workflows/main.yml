@@ -42,6 +42,13 @@ jobs:
     - name: Run Playwright tests
       run: npx playwright test
 
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: test-results/report/
+        retention-days: 30
+
     - name: Capture end time and compute duration
       run: |
         END_TIME=$(date +%s)
@@ -49,14 +56,6 @@ jobs:
         MINUTES=$((DURATION / 60))
         SECONDS=$((DURATION % 60))
         echo "duration=${MINUTES}m ${SECONDS}s" >> $GITHUB_ENV
-
-
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
-      with:
-        name: playwright-report
-        path: test-results/report/
-        retention-days: 30
 
     - name: Parse test results
       if: always()
