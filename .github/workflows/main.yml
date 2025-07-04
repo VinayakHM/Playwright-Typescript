@@ -104,7 +104,7 @@ jobs:
                 { "title": "⚠️ Skipped", "value": "'"${{ env.skip }}"'", "short": true },
                 { "title": "🤷 Flaky", "value": "'"${{ env.flaky }}"'", "short": true },
                 { "title": "🩺 Health", "value": "'"${{ env.health }}%"'", "short": true },
-                { "title": "⏱️ Duration", "value": "${{ env.duration }}", "short": true },
+                { "title": "⏱️ Duration", "value": "${{ process.env.AS_TOOK }}", "short": true },
                 {"title": "User", "value": "'"${{ github.actor }}"'", "short": true }
               ]
             }
