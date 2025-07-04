@@ -1,0 +1,147 @@
+// name: Playwright Tests
+// on:
+//   workflow_dispatch
+//   # push:
+//   #   branches: [ main, master ]
+//   # pull_request:
+//   #   branches: [ main, master ]
+//   # schedule:
+//   #   - cron: '*/15 * * * *'    # At every 15th minute
+// env:
+//   APP_URL: 'https://your-app-url.com'
+//   user: ${{ secrets.USER }}
+//   pwd: ${{ secrets.PWD }}
+//   # Replace with your actual app URL
+// jobs:
+//   test:
+//     timeout-minutes: 60
+//     runs-on: ubuntu-latest
+//     strategy:
+//       fail-fast: false
+//       matrix:
+//         shardIndex: [1, 2, 3, 4, 5, 6 ]
+//         shardTotal: [6]
+//     steps:
+//     - uses: actions/checkout@v4
+//     - uses: actions/setup-node@v4
+//       with:
+//         node-version: lts/*
+//     - name: Install dependencies
+//       run: npm ci
+//     - name: Install Playwright Browsers
+//       run: npx playwright install --with-deps
+//     # - name: 'Create env file'
+//       # run: |
+//       #   touch .env
+//       #   echo user=${{ secrets.USER }} >> .env
+//       #   cat .env
+//     - name: Run Playwright tests
+//       run: npx playwright test --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+//     - name: Upload blob report to GitHub Actions Artifacts
+//       if: always()
+//       uses: actions/upload-artifact@v4
+//       with:
+//         name: blob-report-${{ matrix.shardIndex }}
+//         path: blob-report
+//         retention-days: 1
+//     # - uses: actions/upload-artifact@v4
+//     #   if: ${{ !cancelled() }}
+//     #   with:
+//     #     name: playwright-report
+//     #     path: test-results/report/
+//     #     retention-days: 30
+//     # # Parse test results and calculate health stats
+//     # - name: Parse test results
+//     #   if: always()
+//     #   id: test-stats
+//     #   run: |
+//     #     results=$(cat test-results/results/results.json)
+//     #     stats=$(echo $results | jq .stats)
+//     #     total=$(echo $stats | jq '.expected + .unexpected + .skipped + .flaky')
+//     #     pass=$(echo $stats | jq '.expected')
+//     #     fail=$(echo $stats | jq '.unexpected')
+//     #     skip=$(echo $stats | jq '.skipped')
+//     #     flaky=$(echo $stats | jq '.flaky')
+//     #     health=$((pass * 100 / total))
+//     #     echo "health=$health" >> $GITHUB_ENV
+//     #     echo "pass=$pass" >> $GITHUB_ENV
+//     #     echo "fail=$fail" >> $GITHUB_ENV
+//     #     echo "skip=$skip" >> $GITHUB_ENV
+//     #     echo "flaky=$flaky" >> $GITHUB_ENV
+//     #     echo "total=$total" >> $GITHUB_ENV
+
+//     # - name: Send Slack Notification
+//     #   if: always()
+//     #   uses: 8398a7/action-slack@v3
+//     #   with:
+//     #       status: custom
+//     #       fields: repo,eventName,workflow,job,took
+//     #       custom_payload: |
+//     #         {
+//     #           attachments: [{
+//     #             color: '${{ job.status }}' === 'success' ? 'good' : 'danger',
+//     #             title: `Playwright Demo Automation Results`,
+//     #             fields: [{
+//     #               title: 'Site Under Test',
+//     #               value: '${{ env.APP_URL }}',
+//     #               short: true
+//     #             },
+//     #             {
+//     #               title: 'Triggered By',
+//     #               value: [{'origin': 'pull_request', 'new': 'Pull Request'}, {'origin': 'schedule', 'new': 'Schedule'}, {'origin': 'repository_dispatch', 'new': 'Deploy'}, {'origin': 'workflow_dispatch', 'new': 'GitHub Actions'}, {"origin": "push", "new": "Push Event"}].find(item => item.origin === `${process.env.AS_EVENT_NAME}`).new || `${process.env.AS_EVENT_NAME}`,
+//     #               short: true
+//     #             },
+//     #             {
+//     #               title: 'Repo',
+//     #               value: `${process.env.AS_REPO}`,
+//     #               short: true
+//     #             },
+//     #             {
+//     #               title: 'Execution Time',
+//     #               value: `${process.env.AS_TOOK}`,
+//     #               short: true
+//     #             },
+//     #             {
+//     #               title: 'Workflow',
+//     #               value: `${process.env.AS_WORKFLOW}`,
+//     #               short: true
+//     #             },
+//     #             {
+//     #               title: 'Pull Request',
+//     #               value: `${{ env.PULL_REQUEST_URL }}`,
+//     #               short: false
+//     #             },
+//     #             {
+//     #               title: 'Total Tests',
+//     #               value: `${{ env.total }}`,
+//     #               short: true
+//     #             },
+//     #             {
+//     #               title: 'Health',
+//     #               value: `${{ env.health }}%`,
+//     #               short: true
+//     #             },
+//     #             {
+//     #               title: 'Failed',
+//     #               value: `${{ env.fail }}`,
+//     #               short: true
+//     #             },
+//     #             {
+//     #               title: 'Passed',
+//     #               value: `${{ env.pass }}`,
+//     #               short: true
+//     #             },
+//     #             {
+//     #               title: 'Skipped',
+//     #               value: `${{ env.skip }}`,
+//     #               short: true
+//     #             },
+//     #             {
+//     #               title: 'Flaky',
+//     #               value: `${{ env.flaky }}`,
+//     #               short: true
+//     #             }]
+//     #           }]
+//     #         }  
+//     # env:
+//     #   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
