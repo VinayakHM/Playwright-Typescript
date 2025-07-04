@@ -80,7 +80,7 @@ jobs:
           "attachments": [
             {
               "color": "'"${{ env.SLACK_COLOR }}"'",
-              "title": "🚀 Playwright Test Results",
+              "title": "🚀 :playwright: Playwright Test Results",
               "fields": [
                 { "title": "Site", "value": "'"${{ env.APP_URL }}"'", "short": true },
                 { "title": "Triggered By", "value": "'"${{ github.event_name }}"'", "short": true },
