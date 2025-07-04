@@ -172,10 +172,8 @@ jobs:
         path: test-results/report/
         retention-days: 30
 
-    # Parse test results and calculate health stats
     - name: Parse test results
       if: always()
-      id: test-stats
       run: |
         results=$(cat test-results/results/results.json)
         stats=$(echo $results | jq .stats)
@@ -185,43 +183,24 @@ jobs:
         skip=$(echo $stats | jq '.skipped')
         flaky=$(echo $stats | jq '.flaky')
         health=$((pass * 100 / total))
-        echo "health=$health" >> $GITHUB_ENV
+        echo "total=$total" >> $GITHUB_ENV
         echo "pass=$pass" >> $GITHUB_ENV
         echo "fail=$fail" >> $GITHUB_ENV
         echo "skip=$skip" >> $GITHUB_ENV
         echo "flaky=$flaky" >> $GITHUB_ENV
-        echo "total=$total" >> $GITHUB_ENV
+        echo "health=$health" >> $GITHUB_ENV
 
-    # Set context vars manually
-    - name: Set Slack context vars
+    - name: Set Slack color based on job status
+      if: always()
       run: |
-        echo "AS_EVENT_NAME=${{ github.event_name }}" >> $GITHUB_ENV
-        echo "AS_REPO=${{ github.repository }}" >> $GITHUB_ENV
-        echo "AS_WORKFLOW=${{ github.workflow }}" >> $GITHUB_ENV
-        echo "AS_JOB=${{ github.job }}" >> $GITHUB_ENV
-        echo "AS_TOOK=$(date)" >> $GITHUB_ENV
+        if [ "${{ job.status }}" = "success" ]; then
+          echo "SLACK_COLOR=good" >> $GITHUB_ENV
+        else
+          echo "SLACK_COLOR=danger" >> $GITHUB_ENV
+        fi
 
-    # Send Slack notification via curl
     - name: Send Slack Notification via Webhook
       if: always()
       run: |
-        curl -X POST -H 'Content-type: application/json' --data "{
-          \"attachments\": [{
-            \"color\": \"${{ job.status }}\" == 'success' ? \"good\" : \"danger\",
-            \"title\": \"🚀 Playwright Test Results\",
-            \"fields\": [
-              { \"title\": \"Site\", \"value\": \"${{ env.APP_URL }}\", \"short\": true },
-              { \"title\": \"Triggered By\", \"value\": \"${{ env.AS_EVENT_NAME }}\", \"short\": true },
-              { \"title\": \"Repo\", \"value\": \"${{ env.AS_REPO }}\", \"short\": true },
-              { \"title\": \"Workflow\", \"value\": \"${{ env.AS_WORKFLOW }}\", \"short\": true },
-              { \"title\": \"Job\", \"value\": \"${{ env.AS_JOB }}\", \"short\": true },
-              { \"title\": \"Execution Time\", \"value\": \"${{ env.AS_TOOK }}\", \"short\": true },
-              { \"title\": \"Total Tests\", \"value\": \"${{ env.total }}\", \"short\": true },
-              { \"title\": \"✅ Passed\", \"value\": \"${{ env.pass }}\", \"short\": true },
-              { \"title\": \"❌ Failed\", \"value\": \"${{ env.fail }}\", \"short\": true },
-              { \"title\": \"⚠️ Skipped\", \"value\": \"${{ env.skip }}\", \"short\": true },
-              { \"title\": \"🤷 Flaky\", \"value\": \"${{ env.flaky }}\", \"short\": true },
-              { \"title\": \"🩺 Health\", \"value\": \"${{ env.health }}%\", \"short\": true }
-            ]
-          }]
-        }" ${{ secrets.SLACK_WEBHOOK_URL }}
+        curl -X POST -H 'Content-type: application/json' --data '{
+          "attachments
