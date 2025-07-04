@@ -36,8 +36,20 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
+    - name: Capture start time
+      run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
+
     - name: Run Playwright tests
       run: npx playwright test
+
+    - name: Capture end time and compute duration
+      run: |
+        END_TIME=$(date +%s)
+        DURATION=$((END_TIME - START_TIME))
+        MINUTES=$((DURATION / 60))
+        SECONDS=$((DURATION % 60))
+        echo "duration=${MINUTES}m ${SECONDS}s" >> $GITHUB_ENV
+
 
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
@@ -93,6 +105,7 @@ jobs:
                 { "title": "⚠️ Skipped", "value": "'"${{ env.skip }}"'", "short": true },
                 { "title": "🤷 Flaky", "value": "'"${{ env.flaky }}"'", "short": true },
                 { "title": "🩺 Health", "value": "'"${{ env.health }}%"'", "short": true },
+                { "title": "⏱️ Duration", "value": "${{ env.duration }}", "short": true },
                 {"title": "User", "value": "'"${{ github.actor }}"'", "short": true }
               ]
             }
