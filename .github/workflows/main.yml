@@ -203,4 +203,23 @@ jobs:
       if: always()
       run: |
         curl -X POST -H 'Content-type: application/json' --data '{
-          "attachments
+          "attachments": [
+            {
+              "color": "'"${{ env.SLACK_COLOR }}"'",
+              "title": "🚀 Playwright Test Results",
+              "fields": [
+                { "title": "Site", "value": "'"${{ env.APP_URL }}"'", "short": true },
+                { "title": "Triggered By", "value": "'"${{ github.event_name }}"'", "short": true },
+                { "title": "Repo", "value": "'"${{ github.repository }}"'", "short": true },
+                { "title": "Workflow", "value": "'"${{ github.workflow }}"'", "short": true },
+                { "title": "Job", "value": "'"${{ github.job }}"'", "short": true },
+                { "title": "Total Tests", "value": "'"${{ env.total }}"'", "short": true },
+                { "title": "✅ Passed", "value": "'"${{ env.pass }}"'", "short": true },
+                { "title": "❌ Failed", "value": "'"${{ env.fail }}"'", "short": true },
+                { "title": "⚠️ Skipped", "value": "'"${{ env.skip }}"'", "short": true },
+                { "title": "🤷 Flaky", "value": "'"${{ env.flaky }}"'", "short": true },
+                { "title": "🩺 Health", "value": "'"${{ env.health }}%"'", "short": true }
+              ]
+            }
+          ]
+        }' ${{ secrets.SLACK_WEBHOOK_URL }}
