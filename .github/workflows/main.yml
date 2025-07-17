@@ -63,7 +63,8 @@ jobs:
         echo "fail=$fail" >> $GITHUB_ENV
         echo "skip=$skip" >> $GITHUB_ENV
         echo "flaky=$flaky" >> $GITHUB_ENV
-        echo "duration=$duration" >> $GITHUB_ENV
+        duration_hms=$(printf '%02dh:%02dm:%02ds' $(echo "$duration/3600" | bc) $(echo "($duration%3600)/60" | bc) $(echo "$duration%60" | bc))
+        echo "duration=$duration_hms" >> $GITHUB_ENV
         echo "health=$health" >> $GITHUB_ENV
 
     - name: Set Slack color based on job status
