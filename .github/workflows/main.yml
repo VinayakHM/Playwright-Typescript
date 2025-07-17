@@ -36,9 +36,6 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
 
-    - name: Capture start time
-      run: echo "START_TIME=$(date +%s)" >> $GITHUB_ENV
-
     - name: Run Playwright tests
       run: npx playwright test
 
@@ -48,14 +45,6 @@ jobs:
         name: playwright-report
         path: test-results/report/
         retention-days: 30
-
-    - name: Capture end time and compute duration
-      run: |
-        END_TIME=$(date +%s)
-        DURATION=$((END_TIME - START_TIME))
-        MINUTES=$((DURATION / 60))
-        SECONDS=$((DURATION % 60))
-        echo "duration=${MINUTES}m ${SECONDS}s" >> $GITHUB_ENV
 
     - name: Parse test results
       if: always()
@@ -67,12 +56,14 @@ jobs:
         fail=$(echo $stats | jq '.unexpected')
         skip=$(echo $stats | jq '.skipped')
         flaky=$(echo $stats | jq '.flaky')
+        duration=$(echo $stats | jq '.duration')
         health=$((pass * 100 / total))
         echo "total=$total" >> $GITHUB_ENV
         echo "pass=$pass" >> $GITHUB_ENV
         echo "fail=$fail" >> $GITHUB_ENV
         echo "skip=$skip" >> $GITHUB_ENV
         echo "flaky=$flaky" >> $GITHUB_ENV
+        echo "duration=$duration" >> $GITHUB_ENV
         echo "health=$health" >> $GITHUB_ENV
 
     - name: Set Slack color based on job status
@@ -104,7 +95,7 @@ jobs:
                 { "title": "⚠️ Skipped", "value": "'"${{ env.skip }}"'", "short": true },
                 { "title": "🤷 Flaky", "value": "'"${{ env.flaky }}"'", "short": true },
                 { "title": "🩺 Health", "value": "'"${{ env.health }}%"'", "short": true },
-                { "title": "⏱️ Duration", "value": "${{ env.AS_TOOK }}", "short": true },
+                { "title": "⏱️ Duration", "value": "${{ env.duration }}", "short": true },
                 {"title": "User", "value": "'"${{ github.actor }}"'", "short": true }
               ]
             }
