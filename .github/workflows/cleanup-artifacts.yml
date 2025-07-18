@@ -1,0 +1,14 @@
+name: Clean Old Artifacts
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily at midnight UTC
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete old artifacts
+        uses: glassechidna/artifact-cleaner@master
+        with:
+          minimumAge: 86400  # Deletes artifacts older than 1 day (in seconds)
